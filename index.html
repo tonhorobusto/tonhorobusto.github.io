@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>botao secreto...</title>
+</head>
+<body>
+
+    <button id="meuBotao">aperta aqui</button>
+
+    <script>
+        // Primeiro, o código encontra o botão na tela pelo ID dele
+        let botao = document.getElementById("meuBotao");
+
+        // Depois, criamos a função com a lógica do que deve acontecer
+        function acaoDoClique() {
+            // Exibe uma janela de alerta no navegador
+            alert("TE AMO MUITO PINCESS");
+            
+            // Muda o texto escrito dentro do botão
+            botao.innerText = "amor apretado.";
+        }
+
+        // Por fim, conectamos o evento de "clique" à nossa função
+        botao.onclick = acaoDoClique;
+    </script>
+
+</body>
+</html>
