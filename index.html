@@ -2,25 +2,65 @@
 <html>
 <head>
     <title>botao secreto...</title>
+    <style>
+        /* Centraliza o conteúdo no meio da tela do celular */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Ocupa 100% da altura da tela */
+            margin: 0;
+            background-color: #fff0f3; /* Uma cor de fundo suave */
+            font-family: Arial, sans-serif;
+        }
+
+        /* Estiliza especificamente o nosso botão */
+        #meuBotao {
+            /* PADDING: 20px em cima/embaixo e 40px nas laterais. Isso deixa o botão grande! */
+            padding: 20px 40px; 
+            
+            /* Tamanho da letra maior para facilitar a leitura no celular */
+            font-size: 24px; 
+            
+            /* Bordas arredondadas parecidas com as do iPhone */
+            border-radius: 15px; 
+            
+            /* Cores: fundo vermelho/rosa e texto branco */
+            background-color: #ff4d6d; 
+            color: white;
+            
+            /* Remove a borda padrão feia dos navegadores */
+            border: none; 
+            
+            /* Adiciona uma sombra leve para dar um efeito 3D */
+            box-shadow: 0px 4px 6px rgba(0,0,0,0.2);
+            
+            /* Muda o cursor do mouse se for aberto no computador */
+            cursor: pointer; 
+        }
+
+        /* Efeito opcional: o botão "afunda" um pouquinho quando é clicado */
+        #meuBotao:active {
+            transform: scale(0.95);
+            box-shadow: 0px 2px 4px rgba(0,0,0,0.2);
+        }
+    </style>
 </head>
 <body>
 
     <button id="meuBotao">aperta aqui</button>
 
     <script>
-        // Primeiro, o código encontra o botão na tela pelo ID dele
         let botao = document.getElementById("meuBotao");
 
-        // Depois, criamos a função com a lógica do que deve acontecer
         function acaoDoClique() {
-            // Exibe uma janela de alerta no navegador
             alert("TE AMO MUITO PINCESS");
-            
-            // Muda o texto escrito dentro do botão
             botao.innerText = "amor apretado.";
+            
+            // Opcional: muda a cor do botão depois de clicado
+            botao.style.backgroundColor = "#c9184a"; 
         }
 
-        // Por fim, conectamos o evento de "clique" à nossa função
         botao.onclick = acaoDoClique;
     </script>
 
