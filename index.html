@@ -1,68 +1,306 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR" class="h-full">
 <head>
-    <title>botao secreto...</title>
-    <style>
-        /* Centraliza o conteúdo no meio da tela do celular */
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh; /* Ocupa 100% da altura da tela */
-            margin: 0;
-            background-color: #fff0f3; /* Uma cor de fundo suave */
-            font-family: Arial, sans-serif;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Acesso Restrito</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-        /* Estiliza especificamente o nosso botão */
-        #meuBotao {
-            /* PADDING: 20px em cima/embaixo e 40px nas laterais. Isso deixa o botão grande! */
-            padding: 20px 40px; 
-            
-            /* Tamanho da letra maior para facilitar a leitura no celular */
-            font-size: 24px; 
-            
-            /* Bordas arredondadas parecidas com as do iPhone */
-            border-radius: 15px; 
-            
-            /* Cores: fundo vermelho/rosa e texto branco */
-            background-color: #ff4d6d; 
-            color: white;
-            
-            /* Remove a borda padrão feia dos navegadores */
-            border: none; 
-            
-            /* Adiciona uma sombra leve para dar um efeito 3D */
-            box-shadow: 0px 4px 6px rgba(0,0,0,0.2);
-            
-            /* Muda o cursor do mouse se for aberto no computador */
-            cursor: pointer; 
-        }
+  <!-- Custom CSS for Glassmorphism & Custom Animations -->
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #090d16;
+    }
 
-        /* Efeito opcional: o botão "afunda" um pouquinho quando é clicado */
-        #meuBotao:active {
-            transform: scale(0.95);
-            box-shadow: 0px 2px 4px rgba(0,0,0,0.2);
-        }
-    </style>
+    /* Soft Glassmorphism Card Style */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.56);
+    }
+
+    /* Error Shake Animation */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-10px); }
+      40%, 80% { transform: translateX(10px); }
+    }
+    .animate-shake {
+      animation: shake 0.4s cubic-bezier(.36, .07, .19, .97) both;
+    }
+
+    /* Gentle Floating Animation for Icons */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+    .animate-float {
+      animation: float 4s ease-in-out infinite;
+    }
+
+    /* Background Ambient Glow Effects */
+    @keyframes pulse-glow {
+      0%, 100% { opacity: 0.35; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(1.1); }
+    }
+    .glow-bg {
+      animation: pulse-glow 8s ease-in-out infinite;
+    }
+  </style>
 </head>
-<body>
 
-    <button id="meuBotao">aperta aqui</button>
+<body class="h-full text-slate-100 flex flex-col justify-between overflow-x-hidden antialiased selection:bg-indigo-500 selection:text-white">
 
-    <script>
-        let botao = document.getElementById("meuBotao");
+  <!-- Ambient background glow spots -->
+  <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+    <div class="glow-bg absolute -top-40 -left-40 w-[500px] h-[500px] bg-indigo-600/20 rounded-full blur-[120px]"></div>
+    <div class="glow-bg absolute top-1/2 -right-40 w-[500px] h-[500px] bg-violet-600/20 rounded-full blur-[120px]" style="animation-delay: -4s;"></div>
+  </div>
 
-        function acaoDoClique() {
-            alert("TE AMO MUITO PINCESS");
-            botao.innerText = "amor apretado.";
-            
-            // Opcional: muda a cor do botão depois de clicado
-            botao.style.backgroundColor = "#c9184a"; 
-        }
+  <!-- Main Viewport Container -->
+  <main class="relative z-10 my-auto w-full max-w-md md:max-w-xl mx-auto px-4 py-12 flex flex-col justify-center">
 
-        botao.onclick = acaoDoClique;
-    </script>
+    <!-- ==================================================================== -->
+    <!-- 1. TELA DE BLOQUEIO (LOCK SCREEN)                                    -->
+    <!-- ==================================================================== -->
+    <div id="lock-screen" class="glass-card rounded-3xl p-8 sm:p-10 text-center transition-all duration-500 transform scale-100 opacity-100">
+      
+      <!-- Lock Icon Header -->
+      <div class="relative inline-flex items-center justify-center mb-6">
+        <div class="absolute inset-0 bg-indigo-500/20 rounded-full blur-lg"></div>
+        <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-indigo-500 to-violet-600 text-white flex items-center justify-center text-3xl shadow-lg shadow-indigo-500/20 animate-float">
+          <i id="lock-icon" class="fa-solid fa-ticket"></i>
+        </div>
+      </div>
 
+      <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-2">
+        Acesso Restrito
+      </h1>
+      <p class="text-sm text-slate-400 mb-8 max-w-xs mx-auto">
+        Pra descobrir o conteúdo do nosso date, digite a senha.
+      </p>
+
+      <!-- Password Form -->
+      <form id="password-form" onsubmit="validarSenha(event)" class="space-y-4 max-w-xs mx-auto">
+        <div class="relative">
+          <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-500">
+            <i class="fa-solid fa-key"></i>
+          </span>
+          
+          <input 
+            type="password" 
+            id="password-input" 
+            placeholder="Digite a senha..." 
+            autocomplete="current-password"
+            required
+            class="w-full pl-11 pr-11 py-3.5 bg-slate-900/80 border border-slate-700/80 rounded-2xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all shadow-inner text-sm"
+          />
+
+          <button 
+            type="button" 
+            onclick="alternarVisibilidadeSenha()" 
+            class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-500 hover:text-slate-300 transition-colors">
+            <i id="eye-icon" class="fa-solid fa-eye"></i>
+          </button>
+        </div>
+
+        <!-- Error Message Placeholder -->
+        <div id="error-message" class="hidden text-rose-400 text-xs font-medium space-x-1 items-center justify-center pt-1">
+          <i class="fa-solid fa-circle-exclamation"></i>
+          <span id="error-text">Senha incorreta. Tente novamente.</span>
+        </div>
+
+        <button 
+          type="submit" 
+          class="w-full py-3.5 px-6 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-sm font-semibold rounded-2xl shadow-lg shadow-indigo-600/25 transition-all duration-200 active:scale-[0.98] flex items-center justify-center space-x-2">
+          <span>Revelar Conteúdo</span>
+          <i class="fa-solid fa-arrow-right text-xs"></i>
+        </button>
+      </form>
+    </div>
+
+    <!-- ==================================================================== -->
+    <!-- 🔓 2. CONTEÚDO SECRETO (PERSONALIZE ESTE BLOCO NO CÓDIGO HTML)      -->
+    <!-- ==================================================================== -->
+    <div id="conteudo-secreto" class="hidden glass-card rounded-3xl p-8 sm:p-10 space-y-6 transition-all duration-700 transform scale-95 opacity-0">
+      
+      <!-- Top Status Ribbon -->
+      <div class="flex items-center justify-between pb-4 border-b border-white/10">
+        <div class="flex items-center space-x-2 text-emerald-400 text-xs font-semibold uppercase tracking-wider">
+          <i class="fa-solid fa-lock-open"></i>
+          <span>Convite aberto</span>
+        </div>
+      </div>
+
+      <!-- Secret Header -->
+      <div class="space-y-1">
+        <h2 class="text-2xl font-bold text-white tracking-tight">
+          CINEMINHA CASEIRO
+        </h2>
+        <p class="text-sm text-slate-300 leading-relaxed">
+            Teremos uma sessão muito especial de cinema pra assistir um filminho de terror na chuva, abraçadinhos e quentinhos. 
+          </p>
+        <p class="text-sm text-slate-300 leading-relaxed">
+            NOSSO DATE SERÁ GLORIOSO! 
+          </p>
+      </div>
+
+      <!-- NOVA ESTRUTURA: 3 Fotos com Títulos e Textos -->
+      <div class="space-y-4">
+        
+        <!-- Foto 1 -->
+        <div class="bg-slate-900/60 rounded-2xl p-4 border border-white/5 space-y-3">
+          <h3 class="text-lg font-semibold text-white">Filme: Hokum - O Pesadelo da Bruxa</h3>
+          <img 
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHJZXIKnz5C9pqTTA5jwYwgxGhavWiBoFube-HqaqU_w&s=10" 
+            alt="Foto 1" 
+            class="rounded-xl w-full h-auto border border-white/10"
+          />
+        </div>
+
+        <!-- Foto 2 -->
+        <div class="bg-slate-900/60 rounded-2xl p-4 border border-white/5 space-y-3">
+          <h3 class="text-lg font-semibold text-white">Janta: MEQ MEQ MEQ MEQ MEQ</h3>
+          <img 
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6q1pX28D66d2MmslDKqWyS-baYTE6OwSm4K-jkSsjzsINb8HKQvG6P50&s=10" 
+            alt="Foto 2" 
+            class="rounded-xl w-full h-auto border border-white/10"
+          />
+          <p class="text-sm text-slate-300 leading-relaxed">
+            Qualquer coisa que tu quiser, pra gente se deliciar
+          </p>
+        </div>
+
+        <!-- Foto 3 -->
+        <div class="bg-slate-900/60 rounded-2xl p-4 border border-white/5 space-y-3">
+          <h3 class="text-lg font-semibold text-white">Acompanhamento: Espupu</h3>
+          <img 
+            src="https://s2.glbimg.com/S4KjgnETJVrGXMS0Z4QqNzr7OUI=/620x465/s.glbimg.com/jo/g1/f/original/2013/10/13/espumante.jpg" 
+            alt="Foto 3" 
+            class="rounded-xl w-full h-auto border border-white/10"
+          />
+        </div>
+
+        <!-- Foto 4 -->
+        <div class="bg-slate-900/60 rounded-2xl p-4 border border-white/5 space-y-3">
+          <h3 class="text-lg font-semibold text-white">Sobremesa: Chocolates deliciosos</h3>
+          <img 
+            src="https://media.tenor.com/ZxJZldxjg_8AAAAM/chocolate.gif" 
+            alt="Foto 3" 
+            class="rounded-xl w-full h-auto border border-white/10"
+          />
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  
+
+  <!-- ==================================================================== -->
+  <!-- 🔑 LÓGICA JAVASCRIPT E CONFIGURAÇÃO DA SENHA                         -->
+  <!-- ==================================================================== -->
+  <script>
+    
+    // ==========================================================
+    // 🔑 CONFIGURAÇÃO: DIGITE A SUA SENHA CORRETA ABAIXO
+    // ==========================================================
+    const SENHA_CORRETA = 'jerry'; 
+    // ==========================================================
+
+    // DOM Elements
+    const lockScreen = document.getElementById('lock-screen');
+    const conteudoSecreto = document.getElementById('conteudo-secreto');
+    const passwordInput = document.getElementById('password-input');
+    const errorMessage = document.getElementById('error-message');
+    const lockIcon = document.getElementById('lock-icon');
+    const eyeIcon = document.getElementById('eye-icon');
+
+    // Function to validate password
+    function validarSenha(event) {
+      event.preventDefault();
+      const senhaDigitada = passwordInput.value.trim();
+
+      if (senhaDigitada === SENHA_CORRETA) {
+        // Correct Password -> Unlock
+        errorMessage.classList.add('hidden');
+        errorMessage.classList.remove('flex');
+        
+        // Icon change
+        lockIcon.className = 'fa-solid fa-ticket'; 
+
+        // Animate Out Lock Screen
+        lockScreen.classList.remove('scale-100', 'opacity-100');
+        lockScreen.classList.add('scale-95', 'opacity-0');
+
+        setTimeout(() => {
+          lockScreen.classList.add('hidden');
+          
+          // Animate In Secret Content
+          conteudoSecreto.classList.remove('hidden');
+          setTimeout(() => {
+            conteudoSecreto.classList.remove('scale-95', 'opacity-0');
+            conteudoSecreto.classList.add('scale-100', 'opacity-100');
+          }, 50);
+        }, 400);
+
+      } else {
+        // Incorrect Password -> Shake & Error Message
+        errorMessage.classList.remove('hidden');
+        errorMessage.classList.add('flex');
+
+        lockScreen.classList.add('animate-shake');
+        setTimeout(() => {
+          lockScreen.classList.remove('animate-shake');
+        }, 450);
+
+        passwordInput.value = '';
+        passwordInput.focus();
+      }
+    }
+
+    // Function to toggle password visibility (Eye Icon)
+    function alternarVisibilidadeSenha() {
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        eyeIcon.className = 'fa-solid fa-eye-slash';
+      } else {
+        passwordInput.type = 'password';
+        eyeIcon.className = 'fa-solid fa-eye';
+      }
+    }
+
+    // Function to lock back the page
+    function bloquearNovamente() {
+      conteudoSecreto.classList.remove('scale-100', 'opacity-100');
+      conteudoSecreto.classList.add('scale-95', 'opacity-0');
+
+      setTimeout(() => {
+        conteudoSecreto.classList.add('hidden');
+        lockScreen.classList.remove('hidden');
+        passwordInput.value = '';
+        lockIcon.className = 'fa-solid fa-ticket';
+
+        setTimeout(() => {
+          lockScreen.classList.remove('scale-95', 'opacity-0');
+          lockScreen.classList.add('scale-100', 'opacity-100');
+        }, 50);
+      }, 400);
+    }
+  </script>
 </body>
 </html>
